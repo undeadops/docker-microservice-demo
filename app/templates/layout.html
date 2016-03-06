@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+    <title>Moby Dock is hungry</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+
+<main class="container">
+  <h3><i>{{ message }}</i></h3>
+  <img src="{{ url_for('static', filename='docker-logo.png') }}" width="459" height="261" alt="Docker logo" />
+
+  <a class="btn" href="{{ url_for('feed') }}">Feed Moby Dock</a>
+
+  <p>Moby Dock has been fed {{ feed_count }} times</p>
+</main>
+
+</body>
+</html>
