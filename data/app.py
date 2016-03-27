@@ -10,7 +10,6 @@ app = Flask(__name__)
 api = Api(app)
 
 # Need to Fetch Mongo URL from etcd
-
 mongo_client = MongoClient("mongodb://192.168.99.100:27017")
 
 class MobyDockFeed(Resource):

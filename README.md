@@ -1,13 +1,11 @@
 # docker-microservice-demo
-Playing with Ideas of a Python Flask Micro-Services, utilizing MongoDB, etcd, nginx, and multiple REST API's
-
+Playing with Ideas of Multiple Python Flask Micro-Services, utilizing MongoDB, etcd, nginx, and RabbitMQ/NSQ
 
 ## Idea's built into this project
 
- - Unittests are not being performed
- - Code is in no way production quality
- - purpose of this is to demonstrate service discovery/registration, and multiple "micro" services.
-
+    Purpose of this is to demonstrate service discovery/registration, and multiple "micro" services.
+    Unittests are not being performed
+    Code is in no way production quality
 
 ### Service Names and their purpose
 
@@ -15,6 +13,5 @@ Playing with Ideas of a Python Flask Micro-Services, utilizing MongoDB, etcd, ng
  - data - REST API for accessing data from Mongo (Remove Mongo Dependency from other services)
  - app - Application, pulling Data from Data Layer
  - web - Nginx Load Balancer
- - grandcentral - etcd container for service discovery
-
-
+ - etcd - etcd container for service discovery
+   registrator - Service Discovery for registering services on the host

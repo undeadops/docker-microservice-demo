@@ -13,7 +13,7 @@ services:
       # container restarts
       - /data/db:/data/db
     depends_on:
-      - grandcentral
+      - etcd
   data:
     build: data/
     ports:
@@ -30,16 +30,38 @@ services:
       - /Users/mitch/git/docker-microservice-demo/app/:/code/
     depends_on:
       - data
-#  web:
-#    image/build:
-#    ports:
-#      - "80:80"
-#    depends_on:
-#      - app
-  grandcentral:
-    image: quay.io/coreos/etcd:v2.0.3
+  web:
+    build: web/
     ports:
-      - "4001:4001"
-      - "2380:2380"
+      - "80:80"
+    environment:
+      # Needs changeup to work with linking/etc
+      ETCD_HOST: 192.168.99.100
+    depends_on:
+      - app
+      - etcd
+  #
+  # Service Discovery - etcd
+  #
+  etcd:
+    container_name: etcd
+    image: quay.io/coreos/etcd
+    command: --force-new-cluster -advertise-client-urls="http://etcd:2379,http://etcd:4001" -listen-client-urls="http://0.0.0.0:2379,http://0.0.0.0:4001"
+    ports:
       - "2379:2379"
-    command: -initial-cluster-state new -listen-peer-urls http://0.0.0.0:2380 -initial-cluster-token etcd-cluster-1
+      - "4001:4001"
+      - "4100:4100"
+      - "7001:7001"
+
+  #
+  # Service Discovery - Registrator
+  #
+  registrator:
+    container_name: registrator
+    command: -ip 192.168.99.100 -ttl 30 -ttl-refresh 15 etcd://192.168.99.100:4001
+    image: gliderlabs/registrator:latest
+    network_mode: host
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock"
+    depends_on:
+      - etcd

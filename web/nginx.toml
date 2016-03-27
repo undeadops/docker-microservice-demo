@@ -1,0 +1,7 @@
+[template]
+src = "nginx.conf.tmpl"
+dest = "/etc/nginx/sites-enabled/nginx.conf"
+keys = [
+  "/services",
+]
+reload_cmd = "service nginx reload"

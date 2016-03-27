@@ -1,0 +1,54 @@
+server {
+    listen      80;
+    server_name metauser.net;
+    rewrite     ^   https://$server_name$request_uri? permanent;
+}
+
+server {
+	listen 443 default_server; ## listen for ipv4; this line is default and implied
+
+	root /www;
+	index index.html index.htm;
+
+	# Make site accessible from http://localhost/
+	server_name metauser.net;
+
+        ssl			on;
+	ssl_certificate		/etc/nginx/ssl/metauser.net.pem;
+	ssl_certificate_key	/etc/nginx/ssl/metauser.net.key;
+
+        ssl_prefer_server_ciphers On;
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+        ssl_ciphers  HIGH:!aNULL:!MD5;
+
+	ssl_session_timeout 30m;
+
+	gzip on;
+	gzip_buffers 32 4k;
+	gzip_comp_level 4;
+	gzip_min_length 20;
+	gzip_http_version 1.1;
+	gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript application/javascript;
+	gzip_disable "msie6";
+
+	location ~* \.(gif|jpg|jpeg|png|css|js)$ {
+		expires max;
+  	}
+
+	#error_page 404 /404.html;
+
+	# redirect server error pages to the static page /50x.html
+	#
+	#error_page 500 502 503 504 /50x.html;
+	#location = /50x.html {
+	#	root /usr/share/nginx/www;
+	#}
+
+	# deny access to .htaccess files, if Apache's document root
+	# concurs with nginx's one
+	#
+	#location ~ /\.ht {
+	#	deny all;
+	#}
+
+}
