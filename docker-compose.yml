@@ -19,7 +19,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - /Users/mitch/git/docker-microservice-demo/data/:/code/
+      - /Users/mitch/code/docker-microservice-demo/data/:/code/
     depends_on:
       - mongo
   app:
@@ -27,7 +27,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - /Users/mitch/git/docker-microservice-demo/app/:/code/
+      - /Users/mitch/code/docker-microservice-demo/app/:/code/
     depends_on:
       - data
   web:
@@ -60,8 +60,9 @@ services:
     container_name: registrator
     command: -ip 192.168.99.100 -ttl 30 -ttl-refresh 15 etcd://192.168.99.100:4001
     image: gliderlabs/registrator:latest
-    network_mode: host
     volumes:
       - "/var/run/docker.sock:/tmp/docker.sock"
     depends_on:
       - etcd
+    extra_hosts:
+      - "etcd:192.168.99.100"
