@@ -12,8 +12,6 @@ services:
       # Map this to boot2docker host FileSystem to keep mongo data between
       # container restarts
       - /data/db:/data/db
-    depends_on:
-      - etcd
   data:
     build: data/
     ports:
@@ -30,39 +28,39 @@ services:
       - /Users/mitch/code/docker-microservice-demo/app/:/code/
     depends_on:
       - data
-  web:
-    build: web/
-    ports:
-      - "80:80"
-    environment:
-      # Needs changeup to work with linking/etc
-      ETCD_HOST: 192.168.99.100
-    depends_on:
-      - app
-      - etcd
+  #web:
+  #  build: web/
+  #  ports:
+  #   - "80:80"
+  #  environment:
+  #    # Needs changeup to work with linking/etc
+  #    ETCD_HOST: localhost
+  #  depends_on:
+  #    - app
+  #    - etcd
   #
   # Service Discovery - etcd
   #
-  etcd:
-    container_name: etcd
-    image: quay.io/coreos/etcd
-    command: --force-new-cluster -advertise-client-urls="http://etcd:2379,http://etcd:4001" -listen-client-urls="http://0.0.0.0:2379,http://0.0.0.0:4001"
-    ports:
-      - "2379:2379"
-      - "4001:4001"
-      - "4100:4100"
-      - "7001:7001"
-
+  #etcd:
+  #  container_name: etcd
+  #  image: quay.io/coreos/etcd
+  #  command: --force-new-cluster -advertise-client-urls="http://etcd:2379,http://etcd:4001" -listen-client-urls="http://0.0.0.0:2379,http://0.0.0.0:4001"
+  #  ports:
+  #    - "2379:2379"
+  #    - "4001:4001"
+  #    - "4100:4100"
+  #    - "7001:7001"
+  #
   #
   # Service Discovery - Registrator
   #
-  registrator:
-    container_name: registrator
-    command: -ip 192.168.99.100 -ttl 30 -ttl-refresh 15 etcd://192.168.99.100:4001
-    image: gliderlabs/registrator:latest
-    volumes:
-      - "/var/run/docker.sock:/tmp/docker.sock"
-    depends_on:
-      - etcd
-    extra_hosts:
-      - "etcd:192.168.99.100"
+  #registrator:
+  #  container_name: registrator
+  #  command: -ip 127.0.0.1 -ttl 30 -ttl-refresh 15 etcd://127.0.0.1:4001
+  #  image: gliderlabs/registrator:latest
+  #  volumes:
+  #    - "/var/run/docker.sock:/tmp/docker.sock"
+  #  depends_on:
+  #    - etcd
+  #  extra_hosts:
+  #    - "etcd:127.0.0.1"

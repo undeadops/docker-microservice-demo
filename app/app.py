@@ -11,7 +11,7 @@ stream_handler.setLevel(logging.INFO)
 
 app = Flask(__name__)
 
-API_HOST='http://192.168.99.100:5000'
+API_HOST='http://localhost:5000'
 
 def _feed_moby():
     # DATA URL Server
